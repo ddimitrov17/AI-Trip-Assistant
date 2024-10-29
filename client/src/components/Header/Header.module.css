@@ -1,7 +1,7 @@
 .container {
     width: 100%;
     border-bottom: 1px solid #bfbfbf;
-    padding: 10px;
+    padding: 10px 30px;
     background-color: #7DA0CA;
     display: flex;
     justify-content: space-between;
@@ -10,7 +10,7 @@
 .logo img {
     height: 40px;
     width: 40px;
-    border-radius: 35px;
+    border-radius: 15px;
 }
 
 .logo {
@@ -24,4 +24,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.home, .mytrips , .logout {
+    background-color: #052659;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.profile {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    background-color: #C1E8FF;
 }
