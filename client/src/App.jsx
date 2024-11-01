@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import UserContext from './context/UserContext';
 import TripGeneratorForm from './components/TripGeneratorForm/TripGenerator';
 import DestinationSuggestionForm from './components/DestinationSuggestionForm/DestinationSuggestionForm';
+import TripScheduleGenerator from './components/TripScheduleGenerator/TripScheduleGenerator';
 
 function App() {
   const location = useLocation();
@@ -55,6 +56,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/trip-generator' element={<TripGeneratorForm/>}/>
           <Route path='/location-suggestions' element={<DestinationSuggestionForm/>}/>
+          <Route path='/trip-scheduler' element={<TripScheduleGenerator/>}/>          
         </Routes>
       </UserContext.Provider>
     </>
