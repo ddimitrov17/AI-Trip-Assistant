@@ -6,6 +6,7 @@ export default function TripGeneratorForm() {
     const [formData, setFormData] = useState({
         location: '',
         days: '',
+        number_of_people:'',
         activities: ''
     });
 
@@ -56,6 +57,20 @@ export default function TripGeneratorForm() {
             )}
 
             {step === 3 && (
+                <div>
+                    <label>Who do you plan on traveling with? </label>
+                    <input
+                        type="text"
+                        name="number_of_people"
+                        placeholder="e.g. Just Me, A trip for two, family trip(3-5people), friends trip(5+ people)"
+                        value={formData.tripHighlights}
+                        onChange={handleChange}
+                    />
+                    <button onClick={nextStep}>Next</button>
+                </div>
+            )}
+
+            {step === 4 && (
                 <div>
                     <label>Any activities on your wishlist?</label>
                     <input
