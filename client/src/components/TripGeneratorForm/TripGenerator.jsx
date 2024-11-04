@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import styles from './TripGenerator.module.css'
+import styles from './TripGenerator.module.css';
+import { chatSession } from '../../services/ai.service';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 export default function TripGeneratorForm() {
     const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         location: '',
-        days: '',
-        number_of_people:'',
-        activities: ''
+        number_of_days: '',
+        number_of_people: '',
+        budget: ''
     });
 
     function handleChange(e) {
@@ -16,22 +19,35 @@ export default function TripGeneratorForm() {
             ...formData,
             [name]: value
         });
-    };
+    }
 
     function nextStep() {
         setStep(step + 1);
-    };
+    }
 
-    function submitForm() {
+    async function submitForm() {
+        setLoading(true);
         console.log('Form Data:', formData);
-        console.log('Trip Generated!');
-    };
+        let prompt = import.meta.env.VITE_FINAL_PROMPT;
+        prompt = prompt
+            .replace(/{formData.location}/g, formData.location)
+            .replace(/{formData.number_of_days}/g, formData.number_of_days)
+            .replace(/{formData.number_of_people}/g, formData.number_of_people)
+            .replace(/{formData.budget}/g, formData.budget);
+        console.log(prompt)
+        const result = await chatSession.sendMessage(prompt);
+        console.log(result.response.text());
+
+        setLoading(false);
+    }
 
     return (
         <div className={styles.tripForm}>
-            {step === 1 && (
+            {loading && <LoadingSpinner />}
+
+            {!loading && step === 1 && (
                 <div>
-                    <label>Where in the world are you dreaming of exploring?</label>
+                    <label>To which destination are you planning your trip?</label>
                     <input
                         type="text"
                         name="location"
@@ -42,47 +58,58 @@ export default function TripGeneratorForm() {
                 </div>
             )}
 
-            {step === 2 && (
+            {!loading && step === 2 && (
                 <div>
-                    <label>How many days will your adventure last?</label>
+                    <label>For how many days do you want your trip to last?</label>
                     <input
                         type="number"
-                        name="days"
-                        placeholder="Enter the number of days"
-                        value={formData.days}
+                        name="number_of_days"
+                        value={formData.number_of_days}
                         onChange={handleChange}
                     />
                     <button onClick={nextStep}>Next</button>
                 </div>
             )}
 
-            {step === 3 && (
+            {!loading && step === 3 && (
                 <div>
-                    <label>Who do you plan on traveling with? </label>
-                    <input
-                        type="text"
+                    <label>Who do you plan on traveling with?</label>
+                    <select
                         name="number_of_people"
-                        placeholder="e.g. Just Me, A trip for two, family trip(3-5people), friends trip(5+ people)"
-                        value={formData.tripHighlights}
+                        value={formData.number_of_people}
                         onChange={handleChange}
-                    />
+                    >
+                        <option value="">Select</option>
+                        <option value="one">Just me</option>
+                        <option value="two">Trip for two</option>
+                        <option value="3">A group of 3</option>
+                        <option value="4">A group of 4</option>
+                        <option value="5">A group of 5</option>
+                        <option value="6">A group of 6</option>
+                        <option value="7">A group of 7</option>
+                        <option value="8">A group of 8</option>
+                        <option value="9">A group of 9</option>
+                    </select>
                     <button onClick={nextStep}>Next</button>
                 </div>
             )}
 
-            {step === 4 && (
+            {!loading && step === 4 && (
                 <div>
-                    <label>Any activities on your wishlist?</label>
-                    <input
-                        type="text"
-                        name="activities"
-                        placeholder="e.g., Hiking, city tours, beach time..."
-                        value={formData.activities}
+                    <label>What's your budget for the trip?</label>
+                    <select
+                        name="budget"
+                        value={formData.budget}
                         onChange={handleChange}
-                    />
+                    >
+                        <option value="">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="High">High</option>
+                    </select>
                     <button onClick={submitForm}>Create</button>
                 </div>
             )}
         </div>
     );
-};
+}
