@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { router } = require("./routes/auth.routes");
 const cookieParser = require("cookie-parser");
+const { tripRouter } = require("./routes/trips.routes");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use('/api/auth', router);
+app.use('/api/trips',tripRouter)
 
 
 app.listen(PORT, () => {

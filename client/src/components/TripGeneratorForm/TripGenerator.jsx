@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './TripGenerator.module.css';
 import { chatSession } from '../../services/ai.service';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import UserContext from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 export default function TripGeneratorForm() {
+    const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user && user.id) {
+            console.log("currentUser:", user.id);
+        } else {
+            console.log("User not found or not logged in.");
+        }
+    }, [user]);
+
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -13,8 +28,23 @@ export default function TripGeneratorForm() {
         budget: ''
     });
 
+    function handleLocationSelect(location) {
+        setFormData({
+            ...formData,
+            location: location.label 
+        });
+    }
+
     function handleChange(e) {
         const { name, value } = e.target;
+        if (name=="number_of_days") {
+            if (value < 1 || value > 30) {
+                console.log('Please type in number of days between 1 and 30'); 
+                setIsNumberOfDaysValid(false);  
+            } else {
+                setIsNumberOfDaysValid(true);  
+            }
+        }
         setFormData({
             ...formData,
             [name]: value
@@ -34,11 +64,50 @@ export default function TripGeneratorForm() {
             .replace(/{formData.number_of_days}/g, formData.number_of_days)
             .replace(/{formData.number_of_people}/g, formData.number_of_people)
             .replace(/{formData.budget}/g, formData.budget);
-        console.log(prompt)
+        console.log(prompt) //TODO REMOVE
         const result = await chatSession.sendMessage(prompt);
-        console.log(result.response.text());
+        const text = await result.response.text();
+        console.log(text)
+        const parsedData = JSON.parse(text);
 
+        console.log('Parsed Data:', parsedData); //TODO REMOVE
+        let tripData = {
+            location: formData.location,
+            number_of_days: formData.number_of_days,
+            number_of_people: formData.number_of_people,
+            budget: formData.budget,
+            hotels: JSON.stringify(parsedData.hotels),
+            places_to_visit: JSON.stringify(parsedData.places_to_visit),
+            food_recommendations: JSON.stringify(parsedData.food_recommendations)
+        }
+        console.log(tripData)
+        const createdTrip=await saveTrip(tripData);
         setLoading(false);
+        navigate(`/details/${createdTrip.id}`)
+    }
+
+    async function saveTrip(tripData) {
+        try {
+            const response = await fetch('http://localhost:5000/api/trips/save-trip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    ...tripData
+                }),
+            });
+
+            if (response.ok) {
+                const savedTrip = await response.json();
+                return savedTrip;
+            } else {
+                console.error('Failed to save trip:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error saving trip:', error);
+        }
     }
 
     return (
@@ -48,11 +117,15 @@ export default function TripGeneratorForm() {
             {!loading && step === 1 && (
                 <div>
                     <label>To which destination are you planning your trip?</label>
-                    <input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
+                    <GooglePlacesAutocomplete
+                        apiKey={import.meta.env.VITE_PLACES_API}
+                        selectProps={{
+                            value: formData.location ? { label: formData.location, value: formData.location } : null,
+                            onChange: handleLocationSelect
+                        }}
+                        autocompletionRequest={{
+                            types: ['(cities)'],
+                        }}
                     />
                     <button onClick={nextStep}>Next</button>
                 </div>
@@ -67,7 +140,7 @@ export default function TripGeneratorForm() {
                         value={formData.number_of_days}
                         onChange={handleChange}
                     />
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!isNumberOfDaysValid}>Next</button>
                 </div>
             )}
 
@@ -79,9 +152,8 @@ export default function TripGeneratorForm() {
                         value={formData.number_of_people}
                         onChange={handleChange}
                     >
-                        <option value="">Select</option>
-                        <option value="one">Just me</option>
-                        <option value="two">Trip for two</option>
+                        <option value="1">Just me</option>
+                        <option value="2">Trip for two</option>
                         <option value="3">A group of 3</option>
                         <option value="4">A group of 4</option>
                         <option value="5">A group of 5</option>
@@ -102,7 +174,6 @@ export default function TripGeneratorForm() {
                         value={formData.budget}
                         onChange={handleChange}
                     >
-                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Moderate">Moderate</option>
                         <option value="High">High</option>

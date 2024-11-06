@@ -10,6 +10,7 @@ import UserContext from './context/UserContext';
 import TripGeneratorForm from './components/TripGeneratorForm/TripGenerator';
 import DestinationSuggestionForm from './components/DestinationSuggestionForm/DestinationSuggestionForm';
 import TripScheduleGenerator from './components/TripScheduleGenerator/TripScheduleGenerator';
+import Trip from './components/TripDetails/Trip';
 
 function App() {
   const location = useLocation();
@@ -56,7 +57,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/trip-generator' element={<TripGeneratorForm/>}/>
           <Route path='/location-suggestions' element={<DestinationSuggestionForm/>}/>
-          <Route path='/trip-scheduler' element={<TripScheduleGenerator/>}/>          
+          <Route path='/trip-scheduler' element={<TripScheduleGenerator/>}/>  
+          <Route path='/trip-details/:tripId' element={<Trip/>}/>        
         </Routes>
       </UserContext.Provider>
     </>

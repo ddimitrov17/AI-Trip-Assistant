@@ -20,7 +20,7 @@
 }
 
 .tripForm > div > input {
-    background-color: transparent;
+    background-color: #FFFFFF;
     height: 2em;
     border: none;
     border-radius: 10px;
@@ -49,4 +49,16 @@
 
 .tripForm > div > input::placeholder {
     color: #7DA0CA;
+}
+
+.tripForm > div > select {
+    background-color: #ffffff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 10px;
+    outline: none;
+    border: none;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;  
+    border-radius: 10px;
+    /* height: 2em; */
 }
