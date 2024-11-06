@@ -23,7 +23,6 @@ async function signup(req, res) {
             [username, email, fullName, hashedPassword]
         );
 
-        // Generate and set token in cookie
         generateToken(newUser.rows[0].id, newUser.rows[0].username, res);
 
         res.status(201).json({
@@ -54,7 +53,6 @@ async function login(req, res) {
             return res.status(400).json({ error: "Invalid username or password" });
         }
 
-        // Generate and set token in cookie
         generateToken(user.rows[0].id, user.rows[0].username, res);
 
         res.status(200).json({
@@ -92,8 +90,18 @@ async function current(req, res) {
     }
 }
 
+async function logout(req, res) {
+    try {
+        res.clearCookie('jwt');
+        res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        console.log("Could not logout", error.message);
+    }
+}
+
 module.exports = {
     signup,
     login,
-    current
+    current,
+    logout
 };
