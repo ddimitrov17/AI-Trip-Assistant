@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import Hotel from './Hotel/Hotel';
 import PlaceToVisit from './PlaceToVisit/PlaceToVisit';
+import FoodRecs from './FoodRecs/FoodRecs';
 
 export default function Trip() {
     const { tripId } = useParams();
@@ -56,13 +57,9 @@ export default function Trip() {
                     <section className={styles.section}>
                         <h2>Budget Matching Food Recommendations</h2>
                         {tripData.food_recommendations?.map((restaurant, index) => (
-                            <div key={index} className={styles.food}>
-                                <p>Name: {restaurant.restaurant_name}</p>
-                                <p>Address: {restaurant.address}</p>
-                                <p>Price Range: {restaurant.price_range}</p>
-                                <p>Cuisine Type: {restaurant.cuisine_type}</p>
-                                <p>Opening Hours: {restaurant.opening_hours}</p>
-                            </div>
+                            <FoodRecs
+                            key={index}
+                            restaurant={restaurant}/>
                         ))}
                     </section>
                 </>
