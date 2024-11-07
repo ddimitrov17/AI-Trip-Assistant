@@ -3,6 +3,7 @@ import styles from './Trip.module.css';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import Hotel from './Hotel/Hotel';
+import PlaceToVisit from './PlaceToVisit/PlaceToVisit';
 
 export default function Trip() {
     const { tripId } = useParams();
@@ -46,17 +47,14 @@ export default function Trip() {
                     <section className={styles.section}>
                         <h2>Places to Visit</h2>
                         {tripData.places_to_visit?.map((place, index) => (
-                            <div key={index} className={styles.place}>
-                                <p>Place Name: {place.place_name}</p>
-                                <p>Description: {place.description}</p>
-                                <p>Coordinates: {place.geo_coordinates.latitude}, {place.geo_coordinates.longitude}</p>
-                                <p>Ticket Price: ${place.ticket_pricing} per person</p>
-                            </div>
+                            <PlaceToVisit
+                                key={index}
+                                place={place} />
                         ))}
                     </section>
 
                     <section className={styles.section}>
-                        <h2>Food Recommendations</h2>
+                        <h2>Budget Matching Food Recommendations</h2>
                         {tripData.food_recommendations?.map((restaurant, index) => (
                             <div key={index} className={styles.food}>
                                 <p>Name: {restaurant.restaurant_name}</p>

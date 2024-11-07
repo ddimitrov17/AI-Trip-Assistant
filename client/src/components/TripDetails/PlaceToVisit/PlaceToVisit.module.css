@@ -1,0 +1,48 @@
+.place {
+    border: 2px solid #BFBFBF;
+    width: 250px;
+    border-radius: 10px;
+    /* background-color: #ff6a00f5;
+     */
+    background-color: #019f01;
+    color: white;
+    overflow: hidden;
+}
+
+.placeImage {
+    width: 250px;
+    height: 150px;
+    border-bottom: 1px solid #BFBFBF;
+    background-color: white;
+}
+
+.placeDescription {
+    padding: 10px;
+    width: 100%;
+}
+
+.placeTitle {
+    text-align: center;
+    font-weight: bolder;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.placeAdress {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.placePrice {
+    text-align: center;
+}
+
+.placeExplanation {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+span {
+    font-weight: 700;
+    color: #e3e3e3;
+}
