@@ -5,7 +5,7 @@ export default function Home() {
         <div className={styles.homeContainer}>
             <div className="generate-trip">
                 <h2>Plan a trip</h2>
-                <p>Need help planning your next adventure? Let our AI-powered assistant create a personalized itinerary based on your preferences and budget.</p>
+                <p>Need help planning your next adventure? Let our AI-powered assistant give you accommodation,food and tourist recommendations that are matching your preferences and budget!</p>
                 <a href="/trip-generator">Start planning your trip now!</a>
             </div>
             <div className="generate-location">
