@@ -1,0 +1,28 @@
+.section {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.tripContainer > h1 {
+    font-size: 3em;
+}
+
+.section > h2 {
+    flex: 100%;
+}
+
+.tripContainer {
+    padding: 100px;
+    height: 100vh;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+.tripContainer::-webkit-scrollbar {
+    display: none;
+}

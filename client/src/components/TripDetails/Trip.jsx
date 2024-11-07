@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import styles from './Trip.module.css';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import Hotel from './Hotel/Hotel';
 
 export default function Trip() {
     const { tripId } = useParams();
@@ -23,7 +24,7 @@ export default function Trip() {
         };
 
         fetchTripData();
-    }, [tripId]); 
+    }, [tripId]);
 
     return (
         <div className={styles.tripContainer}>
@@ -31,17 +32,14 @@ export default function Trip() {
                 <LoadingSpinner />
             ) : (
                 <>
-                    <h1>Comprehensive Travel Plan</h1>
+                    <h1>{tripData.location}</h1>
 
                     <section className={styles.section}>
-                        <h2>Hotels</h2>
+                        <h2>Hotel Recommendations</h2>
                         {tripData.hotels?.map((hotel, index) => (
-                            <div key={index} className={styles.hotel}>
-                                <p>Name: {hotel.hotel_name}</p>
-                                <p>Address: {hotel.address}</p>
-                                <p>Price per Night: ${hotel.price_per_night} per person</p>
-                                <p>Coordinates: {hotel.geo_coordinates.latitude}, {hotel.geo_coordinates.longitude}</p>
-                            </div>
+                            <Hotel
+                                key={index}
+                                hotel={hotel} />
                         ))}
                     </section>
 

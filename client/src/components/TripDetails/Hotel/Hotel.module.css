@@ -1,0 +1,41 @@
+.hotel {
+    border: 2px solid #BFBFBF;
+    width: 250px;
+    border-radius: 10px;
+    background-color: #052659;
+    color: white;
+    overflow: hidden;
+}
+
+.hotelImage {
+    width: 250px;
+    height: 150px;
+    border-bottom: 1px solid #BFBFBF;
+    background-color: white;
+}
+
+.hotelDescription {
+    padding: 10px;
+    width: 100%;
+}
+
+.hotelTitle {
+    text-align: center;
+    font-weight: bolder;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.hotelAdress {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hotelPrice {
+    text-align: center;
+}
+
+span {
+    font-weight: 700;
+    color: #e3e3e3;
+}
