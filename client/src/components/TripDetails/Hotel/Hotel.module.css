@@ -39,3 +39,7 @@ span {
     font-weight: 700;
     color: #e3e3e3;
 }
+
+.hotel:hover {
+    transform: scale(1.05);
+}

@@ -49,3 +49,7 @@ span {
     text-align: center;
     margin-top: 10px;
 }
+
+.food:hover {
+    transform: scale(1.05);
+}

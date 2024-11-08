@@ -46,3 +46,7 @@ span {
     font-weight: 700;
     color: #e3e3e3;
 }
+
+.place:hover {
+    transform: scale(1.05);
+}
