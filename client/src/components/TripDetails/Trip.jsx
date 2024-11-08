@@ -11,7 +11,7 @@ export default function Trip() {
     const { tripId } = useParams();
     const [tripData, setTripData] = useState();
     const [loading, setLoading] = useState(true);
-    const [photoURL,setPhotoURL]=useState();
+    const [photoURL, setPhotoURL] = useState();
     useEffect(() => {
         tripData && GetPlacePhoto();
     }, [tripData]);
@@ -22,7 +22,7 @@ export default function Trip() {
         };
 
         const result = await GetPlaceDetails(data);
-        const PHOTO_REF_URL=`https://places.googleapis.com/v1/${result.data.places[0].photos[1].name}/media?maxHeightPx=400&maxWidthPx=800&key=${import.meta.env.VITE_PLACES_API}`
+        const PHOTO_REF_URL = `https://places.googleapis.com/v1/${result.data.places[0].photos[0].name}/media?maxHeightPx=800&maxWidthPx=1200&key=${import.meta.env.VITE_PLACES_API}`
         setPhotoURL(PHOTO_REF_URL)
     };
 
@@ -49,7 +49,7 @@ export default function Trip() {
                 <LoadingSpinner />
             ) : (
                 <>
-                    <img src={photoURL} alt="" />
+                    <img src={photoURL} alt="" className={styles.headImg} />
                     <h1>{tripData.location}</h1>
 
                     <section className={styles.section}>
@@ -66,7 +66,8 @@ export default function Trip() {
                         {tripData.places_to_visit?.map((place, index) => (
                             <PlaceToVisit
                                 key={index}
-                                place={place} />
+                                place={place}
+                                location={tripData.location} />
                         ))}
                     </section>
 
@@ -75,7 +76,8 @@ export default function Trip() {
                         {tripData.food_recommendations?.map((restaurant, index) => (
                             <FoodRecs
                                 key={index}
-                                restaurant={restaurant} />
+                                restaurant={restaurant}
+                                location={tripData.location} />
                         ))}
                     </section>
                 </>

@@ -65,6 +65,7 @@ export default function TripGeneratorForm() {
             .replace(/{formData.number_of_people}/g, formData.number_of_people)
             .replace(/{formData.budget}/g, formData.budget);
         console.log(prompt) //TODO REMOVE
+        console.log(formData.budget)
         const result = await chatSession.sendMessage(prompt);
         const text = await result.response.text();
         console.log(text)
@@ -83,7 +84,7 @@ export default function TripGeneratorForm() {
         console.log(tripData)
         const createdTrip=await saveTrip(tripData);
         setLoading(false);
-        navigate(`/details/${createdTrip.id}`)
+        navigate(`/trip-details/${createdTrip.id}`)
     }
 
     async function saveTrip(tripData) {
@@ -152,6 +153,7 @@ export default function TripGeneratorForm() {
                         value={formData.number_of_people}
                         onChange={handleChange}
                     >
+                        <option value="">Select number of people</option>
                         <option value="1">Just me</option>
                         <option value="2">Trip for two</option>
                         <option value="3">A group of 3</option>
@@ -174,6 +176,7 @@ export default function TripGeneratorForm() {
                         value={formData.budget}
                         onChange={handleChange}
                     >
+                        <option value="">Select budget</option>
                         <option value="Low">Low</option>
                         <option value="Moderate">Moderate</option>
                         <option value="High">High</option>

@@ -12,6 +12,9 @@
     height: 150px;
     border-bottom: 1px solid #BFBFBF;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .restaurantDescription {
@@ -53,3 +56,23 @@ span {
 .food:hover {
     transform: scale(1.05);
 }
+
+.foodImageElement {
+    width: 100%;
+    height: 100%;
+}
+
+.foodIcon {
+    width: 120px;
+    height: 120px;
+    color: #ff6a00f5;
+    background-color: transparent;
+}
+
+.foodIconVegan {
+    width: 120px;
+    height: 120px;
+    color: #019F01;
+    background-color: transparent;
+}
+
