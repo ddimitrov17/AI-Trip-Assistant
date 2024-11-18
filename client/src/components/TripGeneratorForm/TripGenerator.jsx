@@ -67,7 +67,7 @@ export default function TripGeneratorForm() {
         console.log(prompt) //TODO REMOVE
         console.log(formData.budget)
         const result = await chatSession.sendMessage(prompt);
-        const text = await result.response.text();
+        const text = result.response.text();
         console.log(text)
         const parsedData = JSON.parse(text);
 

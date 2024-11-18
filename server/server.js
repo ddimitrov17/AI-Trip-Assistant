@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { router } = require("./routes/auth.routes");
 const cookieParser = require("cookie-parser");
 const { tripRouter } = require("./routes/trips.routes");
+const { locationsRouter } = require("./routes/location.routes");
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use('/api/auth', router);
 app.use('/api/trips',tripRouter)
+app.use('/api/locations',locationsRouter)
 
 
 app.listen(PORT, () => {

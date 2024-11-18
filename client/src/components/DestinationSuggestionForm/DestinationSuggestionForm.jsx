@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from '../TripGeneratorForm/TripGenerator.module.css';
 import { chatSession } from '../../services/ai.service';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 export default function DestinationSuggestionForm() {
+    const navigate = useNavigate();
+    const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -10,6 +14,17 @@ export default function DestinationSuggestionForm() {
         budget: '',
         activities: '',
     });
+
+    const activitiesOptions = {
+        Adventure: ["Hiking", "Skiing", "Zip-lining", "Rock Climbing"],
+        Relaxation: ["Beach", "Spa", "Meditation Retreats", "Resort Stay"],
+        Cultural: ["Museums", "Historic Landmarks", "City Tours", "Traditional Performances"],
+        Romantic: ["Sunset Cruises", "Secluded Retreats", "Couples' Spa", "Fine Dining"],
+        Family: ["Theme Parks", "Zoos", "Outdoor Fun", "Aquariums"],
+        Nature: ["Safaris", "National Parks", "Scenic Hikes", "Wildlife Watching"],
+        Luxury: ["Five-star Hotels", "Exclusive Experiences", "Yacht Cruises", "Fine Dining"],
+        Food: ["Culinary Tours", "Wine Tasting", "Street Food Exploration", "Cooking Classes"],
+    };
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -31,24 +46,49 @@ export default function DestinationSuggestionForm() {
             .replace(/{formData.travelStyle}/g, formData.travelStyle)
             .replace(/{formData.budget}/g, formData.budget)
             .replace(/{formData.activities}/g, formData.activities);
-        console.log(prompt) //TODO REMOVE
-        console.log(formData.budget)
+        console.log(prompt);
         const result = await chatSession.sendMessage(prompt);
         const text = result.response.text();
-        console.log(text)
+        console.log(text);
         const parsedData = JSON.parse(text);
 
-        console.log('Parsed Data:', parsedData); //TODO REMOVE
-        let filledData = {
-            travelStyle: formData.travelStyle,
+        console.log('Parsed Data:', parsedData.destinations);
+        let locationsData = {
+            travel_style: formData.travelStyle,
             budget: formData.budget,
-            activities: formData.activities
+            activities: formData.activities,
+            destinations: JSON.stringify(parsedData.destinations)
         }
-        console.log(filledData)
-        // const createdTrip=await saveTrip(tripData);
+        console.log(locationsData)
+        const createdLocationSuggestions=await saveLocationSuggestions(locationsData);
         setLoading(false);
-        // navigate(`/trip-details/${createdTrip.id}`)
+        // navigate(`/location/${createdTrip.id}`)
     };
+
+    async function saveLocationSuggestions(locationsData) {
+        try {
+            const response = await fetch('http://localhost:5000/api/locations/save-location-suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    ...locationsData
+                }),
+            });
+
+            if (response.ok) {
+                const savedLocations = await response.json();
+                console.log('Done')
+                return savedLocations;
+            } else {
+                console.error('Failed to save location suggestions:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error saving location suggestions:', error);
+        }
+    }
 
     return (
         <div className={styles.tripForm}>
@@ -57,12 +97,11 @@ export default function DestinationSuggestionForm() {
                     <label>What type of travel experience are you looking for?</label>
                     <select name="travelStyle" value={formData.travelStyle} onChange={handleChange}>
                         <option value="">Select one</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Relaxation">Relaxation</option>
-                        <option value="Cultural">Cultural</option>
-                        <option value="Romantic">Romantic</option>
+                        {Object.keys(activitiesOptions).map(style => (
+                            <option key={style} value={style}>{style}</option>
+                        ))}
                     </select>
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.travelStyle}>Next</button>
                 </div>
             )}
 
@@ -76,22 +115,21 @@ export default function DestinationSuggestionForm() {
                         <option value="High">High</option>
                         <option value="Luxury">Luxury</option>
                     </select>
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.budget}>Next</button>
                 </div>
             )}
 
             {step === 3 && (
                 <div>
-                    <label>What activities interest you?</label>
+                    <label>What activities interest you? (Options are based on the travel style you have chosen)</label>
                     <select name="activities" value={formData.activities} onChange={handleChange}>
                         <option value="">Select one</option>
-                        <option value="Beach">Beach</option>
-                        <option value="Skiing">Skiing</option>
-                        <option value="Sightseeing">Sightseeing</option>
-                        <option value="Hiking">Hiking</option>
-                        <option value="Nightlife">Nightlife</option>
+                        {formData.travelStyle &&
+                            activitiesOptions[formData.travelStyle].map(activity => (
+                                <option key={activity} value={activity}>{activity}</option>
+                            ))}
                     </select>
-                    <button onClick={submitForm}>Submit</button>
+                    <button onClick={submitForm} disabled={!formData.activities}>Submit</button>
                 </div>
             )}
         </div>
