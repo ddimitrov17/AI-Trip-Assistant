@@ -1,20 +1,38 @@
-.spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-}
-
-.loading {
-    border: 8px solid #f3f3f3; 
-    border-top: 8px solid #052659; 
+.loader {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    background: #7DA0CA;
     border-radius: 50%;
-    width: 60px; 
-    height: 60px;
-    animation: spin 1s linear infinite;
-}
+    transform: rotate(45deg);
+    animation: rotate 2s linear infinite;
+  }
+  .loader:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 120px;
+    background: #052659;
+    transform: skew(5deg , 60deg) translate(-50%, -5%);
+  }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+  .loader:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #000;
+    transform:translate(-50% , -50%);
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(45deg)}
+    30% , 50% , 70%  { transform: rotate(230deg)}
+    40% , 60% , 80% { transform: rotate(240deg)}
+    100% {  transform: rotate(245deg)}
+ }
