@@ -12,6 +12,7 @@ import DestinationSuggestionForm from './components/DestinationSuggestionForm/De
 import TripScheduleGenerator from './components/TripScheduleGenerator/TripScheduleGenerator';
 import Trip from './components/TripDetails/Trip';
 import LocationsDetails from './components/LocationsDetails/LocationsDetails';
+import ItineraryDetails from './components/ItineraryDetails/ItineraryDetails';
 
 function App() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function App() {
           <Route path='/trip-scheduler' element={<TripScheduleGenerator/>}/>  
           <Route path='/trip-details/:tripId' element={<Trip/>}/>        
           <Route path='/locations-details/:locationsId' element={<LocationsDetails/>}/>  
+          <Route path='/itinerary-details/:itineraryId' element={<ItineraryDetails/>}/>  
         </Routes>
       </UserContext.Provider>
     </>

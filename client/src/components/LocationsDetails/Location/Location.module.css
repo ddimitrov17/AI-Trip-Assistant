@@ -1,7 +1,7 @@
 .locationSection {
     border-bottom: 1px solid #BFBFBF;
     padding: 30px;
-    width: 40vw;
+    width: 100vw;
     padding-left: 0px;
 }
 .locationImage {
@@ -16,4 +16,5 @@
 }
 .description {
     font-size: 1.2em;
+    width: 600px;
 }

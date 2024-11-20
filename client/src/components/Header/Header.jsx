@@ -38,7 +38,7 @@ export default function Header() {
                 {user && (
                     <>
                         <a href="/home" className={styles.home}>Home</a>
-                        <a href="/my-trips" className={styles.mytrips}>My Trips</a>
+                        <a href="/my-trips" className={styles.mytrips}>Plans</a>
                         <a href="" onClick={handleLogout} className={styles.logout}>Logout</a>
                         <div className={styles.profile}>{initials}</div>
                     </>

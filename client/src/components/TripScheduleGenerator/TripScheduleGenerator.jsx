@@ -3,11 +3,14 @@ import styles from '../TripGeneratorForm/TripGenerator.module.css';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { chatSession } from '../../services/ai.service';
 import UserContext from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 export default function TripScheduleGenerator() {
     const [step, setStep] = useState(1);
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const { user }=useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [formData, setFormData] = useState({
         location: '',
         days: '',
@@ -45,9 +48,9 @@ export default function TripScheduleGenerator() {
             itinerary: JSON.stringify(parsedData.itinerary)
         }
         console.log(itineraryData)
-        const createItinerary=await saveItinerary(itineraryData);
+        const createdItinerary = await saveItinerary(itineraryData);
         setLoading(false);
-        // navigate(`/trip-details/${createdTrip.id}`)
+        navigate(`/itinerary-details/${createdItinerary.id}`)
     };
 
     async function saveItinerary(itineraryData) {
@@ -77,13 +80,14 @@ export default function TripScheduleGenerator() {
     function handleLocationSelect(location) {
         setFormData({
             ...formData,
-            location: location.label 
+            location: location.label
         });
     }
 
     return (
         <div className={styles.tripForm}>
-            {step === 1 && (
+            {loading && <LoadingSpinner />}
+            {!loading && step === 1 && (
                 <div>
                     <label>To where is your trip?</label>
                     <GooglePlacesAutocomplete
@@ -100,7 +104,7 @@ export default function TripScheduleGenerator() {
                 </div>
             )}
 
-            {step === 2 && (
+            {!loading &&  step === 2 && (
                 <div>
                     <label>How many days are you planning to stay? (Maximum 10)</label>
                     <input
