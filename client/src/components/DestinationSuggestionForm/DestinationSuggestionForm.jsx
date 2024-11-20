@@ -3,6 +3,7 @@ import styles from '../TripGeneratorForm/TripGenerator.module.css';
 import { chatSession } from '../../services/ai.service';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 export default function DestinationSuggestionForm() {
     const navigate = useNavigate();
@@ -92,7 +93,8 @@ export default function DestinationSuggestionForm() {
 
     return (
         <div className={styles.tripForm}>
-            {step === 1 && (
+            {loading && <LoadingSpinner/>}
+            {!loading && step === 1 && (
                 <div>
                     <label>What type of travel experience are you looking for?</label>
                     <select name="travelStyle" value={formData.travelStyle} onChange={handleChange}>
@@ -105,7 +107,7 @@ export default function DestinationSuggestionForm() {
                 </div>
             )}
 
-            {step === 2 && (
+            {!loading && step === 2 && (
                 <div>
                     <label>What’s your budget?</label>
                     <select name="budget" value={formData.budget} onChange={handleChange}>
@@ -119,7 +121,7 @@ export default function DestinationSuggestionForm() {
                 </div>
             )}
 
-            {step === 3 && (
+            {!loading && step === 3 && (
                 <div>
                     <label>What activities interest you? (Options are based on the travel style you have chosen)</label>
                     <select name="activities" value={formData.activities} onChange={handleChange}>
