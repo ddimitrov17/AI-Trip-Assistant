@@ -1,0 +1,12 @@
+.locationsContainer {
+    padding: 100px;
+    height: 100vh;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+.locationsContainer::-webkit-scrollbar {
+    display: none;
+}

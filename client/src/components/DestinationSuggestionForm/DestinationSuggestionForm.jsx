@@ -63,7 +63,7 @@ export default function DestinationSuggestionForm() {
         console.log(locationsData)
         const createdLocationSuggestions=await saveLocationSuggestions(locationsData);
         setLoading(false);
-        // navigate(`/location/${createdTrip.id}`)
+        navigate(`/locations-details/${createdLocationSuggestions.id}`)
     };
 
     async function saveLocationSuggestions(locationsData) {
