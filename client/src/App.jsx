@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Landing from './components/Landing/Landing';
 import Header from './components/Header/Header';
@@ -56,15 +56,15 @@ function App() {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/signup' element={<Register />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/trip-generator' element={<TripGeneratorForm/>}/>
-          <Route path='/location-suggestions' element={<DestinationSuggestionForm/>}/>
-          <Route path='/trip-scheduler' element={<TripScheduleGenerator/>}/>  
-          <Route path='/trip-details/:tripId' element={<Trip/>}/>        
-          <Route path='/locations-details/:locationsId' element={<LocationsDetails/>}/>  
-          <Route path='/itinerary-details/:itineraryId' element={<ItineraryDetails/>}/>  
-          <Route path='/my-plans/:userId' element={<Plans/>}/>
+          <Route path='/signup' element={currentUser ? <Navigate to="/home" /> : <Register />} />
+          <Route path='/login' element={currentUser ? <Navigate to="/home" /> : <Login />} />
+          <Route path='/trip-generator' element={currentUser==false ? <Navigate to="/" /> : <TripGeneratorForm />}/>
+          <Route path='/location-suggestions' element={currentUser==false ? <Navigate to="/" /> : <DestinationSuggestionForm />}/>
+          <Route path='/trip-scheduler' element={currentUser==false ? <Navigate to="/" /> : <TripScheduleGenerator />}/>  
+          <Route path='/trip-details/:tripId' element={currentUser!=null ? <Trip /> : <Navigate to="/" />} />
+          <Route path='/locations-details/:locationsId' element={currentUser!=null ? <LocationsDetails /> : <Navigate to="/" />} />
+          <Route path='/itinerary-details/:itineraryId' element={currentUser!=null ? <ItineraryDetails /> : <Navigate to="/" />} />
+          <Route path='/my-plans/:userId' element={currentUser!=false ? <Plans/> : <Navigate to="/" />}/>
         </Routes>
       </UserContext.Provider>
     </>
