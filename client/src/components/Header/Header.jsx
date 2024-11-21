@@ -8,7 +8,6 @@ export default function Header() {
     const navigate = useNavigate();
     let initials = '';
     if (user) {
-        console.log(user.full_name); //TODO: Remove
         let firstLetter = user.full_name.slice(0, 1);
         let firstLetterSurname = user.full_name.split(' ')[1].slice(0, 1);
         initials = firstLetter + firstLetterSurname;
@@ -30,7 +29,7 @@ export default function Header() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.logo}>
+            <div className={styles.logo} onClick={() => {navigate('/home')}}>
                 <img src="/trip-assistant-logo.png" alt="Trip Assistant Logo" />
                 <div className={styles.title}>AI Trip Assistant</div>
             </div>
@@ -38,7 +37,7 @@ export default function Header() {
                 {user && (
                     <>
                         <a href="/home" className={styles.home}>Home</a>
-                        <a href="/my-trips" className={styles.mytrips}>Plans</a>
+                        <a href={`/my-plans/${user.id}`} className={styles.mytrips}>Plans</a>
                         <a href="" onClick={handleLogout} className={styles.logout}>Logout</a>
                         <div className={styles.profile}>{initials}</div>
                     </>

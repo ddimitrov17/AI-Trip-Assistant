@@ -13,6 +13,7 @@ import TripScheduleGenerator from './components/TripScheduleGenerator/TripSchedu
 import Trip from './components/TripDetails/Trip';
 import LocationsDetails from './components/LocationsDetails/LocationsDetails';
 import ItineraryDetails from './components/ItineraryDetails/ItineraryDetails';
+import Plans from './components/Plans/Plans';
 
 function App() {
   const location = useLocation();
@@ -63,6 +64,7 @@ function App() {
           <Route path='/trip-details/:tripId' element={<Trip/>}/>        
           <Route path='/locations-details/:locationsId' element={<LocationsDetails/>}/>  
           <Route path='/itinerary-details/:itineraryId' element={<ItineraryDetails/>}/>  
+          <Route path='/my-plans/:userId' element={<Plans/>}/>
         </Routes>
       </UserContext.Provider>
     </>
