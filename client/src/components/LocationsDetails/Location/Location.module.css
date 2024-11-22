@@ -18,3 +18,34 @@
     font-size: 1.2em;
     width: 600px;
 }
+
+@media (max-width:600px) {
+    .locationSection {
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+        justify-content: center;
+        text-align: center; 
+        margin: 10px auto; 
+        padding: 20px; 
+        width: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .locationImage {
+        width: 100% !important; 
+        height: auto;
+        aspect-ratio: 1.5;
+    }
+
+    .name {
+        font-size: 1.5em; 
+        margin-top: 15px; 
+    }
+
+    .description {
+        font-size: 1em;
+        width: 90%; 
+        margin-top: 10px; 
+    }
+}

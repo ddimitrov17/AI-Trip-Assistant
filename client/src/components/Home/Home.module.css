@@ -4,6 +4,13 @@
     background-color: #C1E8FF;
     justify-content: space-around;
     height: 100vh;
+    overflow: auto; 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.homeContainer::-webkit-scrollbar {
+    display: none; 
 }
 
 .homeContainer>* {
@@ -22,6 +29,7 @@
     border-radius: 15px;
     margin-top: 30px;
     font-weight: 700;
+    text-align: center;
 }
 
 .homeContainer>*>p {
@@ -31,4 +39,19 @@
 
 .homeContainer>*>h2 {
     text-align: center;
+}
+
+@media (max-width:600px) {
+    .homeContainer {
+        flex-direction: column;
+        align-items: center;
+        width: 100% !important;
+    }
+    .homeContainer > * {
+        width: 80%;
+    }
+
+    .homeContainer > :last-child {
+        margin-bottom: 100px;
+    }
 }

@@ -57,3 +57,18 @@
     background-color: #C1E8FF;
 }
 
+@media (max-width:600px) {
+    .title {
+        display: none;
+    }
+    .home {
+        display: none;
+    }
+    .navigation {
+        gap: 15px;
+    }
+    .logo img {
+        margin-right: 50px !important;
+    }
+    
+}

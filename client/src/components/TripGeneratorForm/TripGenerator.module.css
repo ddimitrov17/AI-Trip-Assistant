@@ -4,6 +4,13 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    overflow: auto; 
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+}
+
+.tripForm::-webkit-scrollbar {
+    display: none; 
 }
 .tripForm > div {
     display: flex;
@@ -61,4 +68,34 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;  
     border-radius: 10px;
     /* height: 2em; */
+}
+
+@media (max-width:600px) {
+    .tripForm > div {
+        width: 80%;
+    }
+    .tripForm > :last-child {
+        margin-bottom: 100px;
+    }
+    .tripForm > :first-child {
+        padding-top: 100px;
+    }
+    button {
+        width: 40% !important;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+    .tripForm > div {
+        width: 80%;
+    }
+    .tripForm > :last-child {
+        margin-bottom: 100px;
+    }
+    .tripForm > :first-child {
+        padding-top: 100px;
+    }
+    button {
+        width: 30% !important;
+    }
 }

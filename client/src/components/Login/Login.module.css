@@ -66,3 +66,9 @@ input:-webkit-autofill {
     -webkit-text-fill-color: white;
     transition: background-color 5000s ease-in-out 0s;
 }
+
+@media (max-width:600px) {
+    .container {
+        width: 80%;
+    }
+}
