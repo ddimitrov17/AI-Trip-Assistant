@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 export default function TripScheduleGenerator() {
+    const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
     const [step, setStep] = useState(1);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -18,6 +19,14 @@ export default function TripScheduleGenerator() {
 
     function handleChange(e) {
         const { name, value } = e.target;
+        if (name=="days") {
+            if (value < 1 || value > 10) {
+                console.log('Please type in number of days between 1 and 10'); 
+                setIsNumberOfDaysValid(false);  
+            } else {
+                setIsNumberOfDaysValid(true);  
+            }
+        }
         setFormData({
             ...formData,
             [name]: value
@@ -100,7 +109,7 @@ export default function TripScheduleGenerator() {
                             types: ['(cities)'],
                         }}
                     />
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.location}>Next</button>
                 </div>
             )}
 
@@ -112,10 +121,9 @@ export default function TripScheduleGenerator() {
                         name="days"
                         value={formData.days}
                         onChange={handleChange}
-                        min="1"
-                        max="10"
+                        placeholder='Between 1 and 10'
                     />
-                    <button onClick={submitForm}>Generate Itinerary</button>
+                    <button onClick={submitForm} disabled={!formData.days || !isNumberOfDaysValid}>Generate Itinerary</button>
                 </div>
             )}
         </div>

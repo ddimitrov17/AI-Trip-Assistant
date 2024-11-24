@@ -128,7 +128,7 @@ export default function TripGeneratorForm() {
                             types: ['(cities)'],
                         }}
                     />
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.location}>Next</button>
                 </div>
             )}
 
@@ -140,8 +140,9 @@ export default function TripGeneratorForm() {
                         name="number_of_days"
                         value={formData.number_of_days}
                         onChange={handleChange}
+                        placeholder='Between 1 and 30'
                     />
-                    <button onClick={nextStep} disabled={!isNumberOfDaysValid}>Next</button>
+                    <button onClick={nextStep} disabled={!isNumberOfDaysValid && !formData.number_of_days}>Next</button>
                 </div>
             )}
 
@@ -152,6 +153,7 @@ export default function TripGeneratorForm() {
                         name="number_of_people"
                         value={formData.number_of_people}
                         onChange={handleChange}
+                        className={styles.select}
                     >
                         <option value="">Select number of people</option>
                         <option value="1">Just me</option>
@@ -164,7 +166,7 @@ export default function TripGeneratorForm() {
                         <option value="8">A group of 8</option>
                         <option value="9">A group of 9</option>
                     </select>
-                    <button onClick={nextStep}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.number_of_people}>Next</button>
                 </div>
             )}
 
@@ -181,7 +183,7 @@ export default function TripGeneratorForm() {
                         <option value="Moderate">Moderate</option>
                         <option value="High">High</option>
                     </select>
-                    <button onClick={submitForm}>Create</button>
+                    <button onClick={submitForm} disabled={!formData.budget}>Create</button>
                 </div>
             )}
         </div>
