@@ -11,20 +11,6 @@ export default function Trip() {
     const { tripId } = useParams();
     const [tripData, setTripData] = useState();
     const [loading, setLoading] = useState(true);
-    const [photoURL, setPhotoURL] = useState();
-    useEffect(() => {
-        tripData && GetPlacePhoto();
-    }, [tripData]);
-
-    const GetPlacePhoto = async () => {
-        const data = {
-            textQuery: tripData.location
-        };
-
-        const result = await GetPlaceDetails(data);
-        const PHOTO_REF_URL = `https://places.googleapis.com/v1/${result.data.places[0].photos[0].name}/media?maxHeightPx=800&maxWidthPx=1200&key=${import.meta.env.VITE_PLACES_API}`
-        setPhotoURL(PHOTO_REF_URL)
-    };
 
     useEffect(() => {
         const fetchTripData = async () => {
@@ -49,7 +35,7 @@ export default function Trip() {
                 <LoadingSpinner />
             ) : (
                 <>
-                    <img src={photoURL} alt="" className={styles.headImg} />
+                    <img src={tripData.location_image} alt="" className={styles.headImg} />
                     <h1>{tripData.location}</h1>
 
                     <section className={styles.section}>

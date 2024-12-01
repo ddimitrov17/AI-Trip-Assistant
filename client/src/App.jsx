@@ -45,9 +45,9 @@ function App() {
     getCurrentUser();
   }, [location.pathname]);
 
-  // useEffect(() => {
-  //   console.log("currentUser:", currentUser);
-  // }, [currentUser]);
+  useEffect(() => {
+    console.log("currentUser:", currentUser);
+  }, [currentUser]);
 
   return (
     <>
@@ -61,7 +61,7 @@ function App() {
           <Route path='/trip-generator' element={currentUser==false ? <Navigate to="/" /> : <TripGeneratorForm />}/>
           <Route path='/location-suggestions' element={currentUser==false ? <Navigate to="/" /> : <DestinationSuggestionForm />}/>
           <Route path='/trip-scheduler' element={currentUser==false ? <Navigate to="/" /> : <TripScheduleGenerator />}/>  
-          <Route path='/trip-details/:tripId' element={currentUser!=null ? <Trip /> : <Navigate to="/" />} />
+          <Route path='/trip-details/:tripId' element={<Trip />} />
           <Route path='/locations-details/:locationsId' element={currentUser!=null ? <LocationsDetails /> : <Navigate to="/" />} />
           <Route path='/itinerary-details/:itineraryId' element={currentUser!=null ? <ItineraryDetails /> : <Navigate to="/" />} />
           <Route path='/my-plans/:userId' element={currentUser!=false ? <Plans/> : <Navigate to="/" />}/>

@@ -35,7 +35,6 @@ export default function Plans() {
 
         fetchAllOfType();
     }, [currentTab]);
-
     return (
         <div className={styles.plansContainer}>
             <section className={styles.upper}>
@@ -65,7 +64,7 @@ export default function Plans() {
                     <LoadingSpinner />
                 ) : currentTypeData && currentTypeData.length > 0 ? (
                     currentTypeData.map((currentEntry, index) => (
-                        <PlanEntry key={index} entry={currentEntry} index={index} entryType={currentTab}/>
+                        <PlanEntry key={index} entry={currentEntry} index={index} entryType={currentTab} image={currentTypeData[index].location_image}/>
                     ))
                 ) : (
                     <p>No data available for {currentTab}</p>
