@@ -4,6 +4,7 @@ import { chatSession } from '../../services/ai.service';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { getBigPlacePhoto } from '../../services/photo.service';
 
 export default function DestinationSuggestionForm() {
     const navigate = useNavigate();
@@ -52,8 +53,10 @@ export default function DestinationSuggestionForm() {
         const text = result.response.text();
         console.log(text);
         const parsedData = JSON.parse(text);
-
         console.log('Parsed Data:', parsedData.destinations);
+        for (let i = 0; i < parsedData.destinations.length; i++) {
+            parsedData.destinations[i].locationImage=await getBigPlacePhoto(parsedData.destinations[i].name);
+        }            
         let locationsData = {
             travel_style: formData.travelStyle,
             budget: formData.budget,

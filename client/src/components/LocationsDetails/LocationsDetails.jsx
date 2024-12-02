@@ -37,6 +37,7 @@ export default function LocationsDetails() {
                                 key={index}
                                 locationName={destination.name}
                                 locationDescription={destination.description}
+                                locationImage={destination.locationImage}
                             />
                         ))
                     )}
