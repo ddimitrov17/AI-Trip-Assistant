@@ -5,6 +5,7 @@ import { chatSession } from '../../services/ai.service';
 import UserContext from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { getBigPlacePhoto } from '../../services/photo.service';
 
 export default function TripScheduleGenerator() {
     const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
@@ -49,12 +50,13 @@ export default function TripScheduleGenerator() {
         const text = result.response.text();
         console.log(text)
         const parsedData = JSON.parse(text);
-
+        const locationImage = await getBigPlacePhoto(formData.location);
         console.log('Parsed Data:', parsedData); //TODO REMOVE
         let itineraryData = {
             location: formData.location,
             days: formData.days,
-            itinerary: JSON.stringify(parsedData.itinerary)
+            itinerary: JSON.stringify(parsedData.itinerary),
+            location_image: locationImage
         }
         console.log(itineraryData)
         const createdItinerary = await saveItinerary(itineraryData);

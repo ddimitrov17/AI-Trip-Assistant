@@ -1,15 +1,15 @@
 const { db } = require("../database/database");
 
 async function createItinerary(req, res) {
-    const { user_id, location, days, itinerary } = req.body;
+    const { user_id, location, days, itinerary, location_image } = req.body;
 
     try {
         const query = `
-            INSERT INTO itineraries (user_id,location,days,itinerary)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO itineraries (user_id,location,days,itinerary,location_image)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
         `;
-        const values = [user_id, location, days, itinerary];
+        const values = [user_id, location, days, itinerary, location_image];
         const result = await db.query(query, values);
 
         res.status(201).json(result.rows[0]);

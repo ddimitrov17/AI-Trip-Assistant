@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { GetPlaceDetails } from "../../services/photo.api";
 import styles from './ItineraryDetails.module.css'
 import { IoLocationOutline } from "react-icons/io5";
 
@@ -28,21 +27,6 @@ export default function ItineraryDetails() {
         fetchItineraryData();
     }, [itineraryId]);
 
-    const [photoURL, setPhotoURL] = useState();
-    useEffect(() => {
-        itineraryData && GetPlacePhoto();
-    }, [itineraryData]);
-
-    const GetPlacePhoto = async () => {
-        const data = {
-            textQuery: itineraryData.location
-        };
-
-        const result = await GetPlaceDetails(data);
-        const PHOTO_REF_URL = `https://places.googleapis.com/v1/${result.data.places[0].photos[0].name}/media?maxHeightPx=800&maxWidthPx=1200&key=${import.meta.env.VITE_PLACES_API}`
-        setPhotoURL(PHOTO_REF_URL)
-    };
-
     return (
         <div>
             {loading ? (
@@ -51,7 +35,7 @@ export default function ItineraryDetails() {
                 <>
                     {itineraryData && (
                         <section className={styles.itineraryContainer}>
-                            <img src={photoURL} alt="" className={styles.itineraryImage} />
+                            <img src={itineraryData.location_image} alt="" className={styles.itineraryImage} />
                             <h2 className={styles.itineraryTitle}>{itineraryData.location}</h2>
                             <div>
                                 {itineraryData.itinerary.map((currentItinerary, index) => (
