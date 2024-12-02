@@ -5,7 +5,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import UserContext from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import { getBigPlacePhoto } from '../../services/photo.service';
+import { getBigPlacePhoto, getSmallPlacePhoto } from '../../services/photo.service';
 
 export default function TripGeneratorForm() {
     const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
@@ -74,6 +74,12 @@ export default function TripGeneratorForm() {
         const locationImage=await getBigPlacePhoto(formData.location);
         console.log(locationImage) //TODO REMOVE
         console.log('Parsed Data:', parsedData); //TODO REMOVE
+        for (let i = 0; i < parsedData.hotels.length; i++) {
+            parsedData.hotels[i].locationImage=await getSmallPlacePhoto(`${parsedData.hotels[i].hotel_name},${formData.location}`);
+        }  
+        for (let j = 0; j < parsedData.places_to_visit.length; j++) {
+            parsedData.places_to_visit[j].locationImage=await getSmallPlacePhoto(`${parsedData.places_to_visit[j].place_name},${formData.location}`);
+        }   
         let tripData = {
             location: formData.location,
             number_of_days: formData.number_of_days,
