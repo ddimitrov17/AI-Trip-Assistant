@@ -12,14 +12,6 @@ export default function TripGeneratorForm() {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (user && user.id) {
-            console.log("currentUser:", user.id);
-        } else {
-            console.log("User not found or not logged in.");
-        }
-    }, [user]);
-
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -40,7 +32,6 @@ export default function TripGeneratorForm() {
         const { name, value } = e.target;
         if (name=="number_of_days") {
             if (value < 1 || value > 30) {
-                console.log('Please type in number of days between 1 and 30'); 
                 setIsNumberOfDaysValid(false);  
             } else {
                 setIsNumberOfDaysValid(true);  
@@ -58,22 +49,16 @@ export default function TripGeneratorForm() {
 
     async function submitForm() {
         setLoading(true);
-        console.log('Form Data:', formData);
         let prompt = import.meta.env.VITE_FINAL_PROMPT;
         prompt = prompt
             .replace(/{formData.location}/g, formData.location)
             .replace(/{formData.number_of_days}/g, formData.number_of_days)
             .replace(/{formData.number_of_people}/g, formData.number_of_people)
             .replace(/{formData.budget}/g, formData.budget);
-        console.log(prompt) //TODO REMOVE
-        console.log(formData.budget)
         const result = await chatSession.sendMessage(prompt);
         const text = result.response.text();
-        console.log(text)
         const parsedData = JSON.parse(text);
         const locationImage=await getBigPlacePhoto(formData.location);
-        console.log(locationImage) //TODO REMOVE
-        console.log('Parsed Data:', parsedData); //TODO REMOVE
         for (let i = 0; i < parsedData.hotels.length; i++) {
             parsedData.hotels[i].locationImage=await getSmallPlacePhoto(`${parsedData.hotels[i].hotel_name},${formData.location}`);
         }  
@@ -90,7 +75,6 @@ export default function TripGeneratorForm() {
             food_recommendations: JSON.stringify(parsedData.food_recommendations),
             location_image: locationImage
         }
-        console.log(tripData)
         const createdTrip=await saveTrip(tripData);
         setLoading(false);
         navigate(`/trip-details/${createdTrip.id}`)

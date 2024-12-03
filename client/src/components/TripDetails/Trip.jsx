@@ -17,8 +17,6 @@ export default function Trip() {
                 const response = await fetch(`http://localhost:5000/api/trips/get-trip/${tripId}`);
                 const tripData = await response.json();
                 setTripData(tripData);
-                console.log(tripData.hotels); //TODO REMOVE
-                console.log(tripData.places_to_visit); //TODO REMOVE
             } catch (error) {
                 console.error('Error fetching trip data:', error);
             } finally {

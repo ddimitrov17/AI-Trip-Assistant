@@ -45,9 +45,9 @@ function App() {
     getCurrentUser();
   }, [location.pathname]);
 
-  useEffect(() => {
-    console.log("currentUser:", currentUser);
-  }, [currentUser]);
+  // useEffect(() => {
+  //   console.log("currentUser:", currentUser);
+  // }, [currentUser]);
 
   return (
     <>

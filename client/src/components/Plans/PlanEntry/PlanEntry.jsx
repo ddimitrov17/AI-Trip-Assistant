@@ -30,7 +30,6 @@ export default function PlanEntry({ entry, index, entryType,image }) {
                             className={styles.image}
                             onClick={() => {
                                 const path = routeMapping[entryType];
-                                console.log(path);
                                 navigate(path);
                             }}
                         />
@@ -39,7 +38,6 @@ export default function PlanEntry({ entry, index, entryType,image }) {
                             className={styles.icon}
                             onClick={() => {
                                 const path = routeMapping[entryType];
-                                console.log(path);
                                 navigate(path);
                             }}
                         />

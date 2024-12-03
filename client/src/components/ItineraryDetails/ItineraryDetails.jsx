@@ -16,7 +16,6 @@ export default function ItineraryDetails() {
                 const response = await fetch(`http://localhost:5000/api/itinerary/get-itinerary/${itineraryId}`);
                 const data = await response.json();
                 setItineraryData(data);
-                console.log(data);
             } catch (error) {
                 console.error('Error fetching itinerary data:', error);
             } finally {

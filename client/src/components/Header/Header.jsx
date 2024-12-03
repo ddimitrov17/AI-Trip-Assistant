@@ -20,7 +20,6 @@ export default function Header() {
                 credentials: 'include'
             });
             const data = await response.json();
-            console.log(data)
             navigate('/');
         } catch (error) {
             console.error('Error connecting to the logout endpoint:', error);

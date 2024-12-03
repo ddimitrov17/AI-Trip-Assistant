@@ -41,19 +41,15 @@ export default function DestinationSuggestionForm() {
     };
 
     async function submitForm() {
-        console.log('Form Data:', formData);
         setLoading(true);
         let prompt = import.meta.env.VITE_LOCATION_PROMPT;
         prompt = prompt
             .replace(/{formData.travelStyle}/g, formData.travelStyle)
             .replace(/{formData.budget}/g, formData.budget)
             .replace(/{formData.activities}/g, formData.activities);
-        console.log(prompt);
         const result = await chatSession.sendMessage(prompt);
         const text = result.response.text();
-        console.log(text);
         const parsedData = JSON.parse(text);
-        console.log('Parsed Data:', parsedData.destinations);
         for (let i = 0; i < parsedData.destinations.length; i++) {
             parsedData.destinations[i].locationImage=await getBigPlacePhoto(parsedData.destinations[i].name);
         }            
@@ -63,7 +59,6 @@ export default function DestinationSuggestionForm() {
             activities: formData.activities,
             destinations: JSON.stringify(parsedData.destinations)
         }
-        console.log(locationsData)
         const createdLocationSuggestions=await saveLocationSuggestions(locationsData);
         setLoading(false);
         navigate(`/locations-details/${createdLocationSuggestions.id}`)
@@ -84,7 +79,6 @@ export default function DestinationSuggestionForm() {
 
             if (response.ok) {
                 const savedLocations = await response.json();
-                console.log('Done')
                 return savedLocations;
             } else {
                 console.error('Failed to save location suggestions:', response.statusText);

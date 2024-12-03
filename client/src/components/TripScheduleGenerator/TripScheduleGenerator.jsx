@@ -22,7 +22,6 @@ export default function TripScheduleGenerator() {
         const { name, value } = e.target;
         if (name=="days") {
             if (value < 1 || value > 10) {
-                console.log('Please type in number of days between 1 and 10'); 
                 setIsNumberOfDaysValid(false);  
             } else {
                 setIsNumberOfDaysValid(true);  
@@ -40,25 +39,20 @@ export default function TripScheduleGenerator() {
 
     async function submitForm() {
         setLoading(true);
-        console.log('Form Data:', formData);
         let prompt = import.meta.env.VITE_ITINERARY_PROMPT;
         prompt = prompt
             .replace(/{formData.location}/g, formData.location)
             .replace(/{formData.days}/g, formData.days);
-        console.log(prompt) //TODO REMOVE
         const result = await chatSession.sendMessage(prompt);
         const text = result.response.text();
-        console.log(text)
         const parsedData = JSON.parse(text);
         const locationImage = await getBigPlacePhoto(formData.location);
-        console.log('Parsed Data:', parsedData); //TODO REMOVE
         let itineraryData = {
             location: formData.location,
             days: formData.days,
             itinerary: JSON.stringify(parsedData.itinerary),
             location_image: locationImage
         }
-        console.log(itineraryData)
         const createdItinerary = await saveItinerary(itineraryData);
         setLoading(false);
         navigate(`/itinerary-details/${createdItinerary.id}`)
