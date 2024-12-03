@@ -40,7 +40,7 @@ Whether you're planning a solo trip, a family vacation, or a quick weekend getaw
 
 ### Saved Trips  
 - **Save and Access Later:**  
-  Save generated trips for future reference or modifications.  
+  Save generated trips for future reference. 
 
 ### Responsive Design  
 - **Device Compatibility:**  
