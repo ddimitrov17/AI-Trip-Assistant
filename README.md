@@ -4,6 +4,7 @@
 
 Whether you're planning a solo trip, a family vacation, or a quick weekend getaway, **AI Trip Assistant** simplifies the process.
 
+Deployed App: https://ai-trip-assistant-frontend.onrender.com
 ---
 
 ## Features  
