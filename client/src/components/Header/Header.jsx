@@ -17,10 +17,15 @@ export default function Header() {
         event.preventDefault();
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+                method: 'POST', 
                 credentials: 'include'
             });
-            const data = await response.json();
-            navigate('/');
+            if (response.ok) {
+                setUser(null);
+                navigate('/');
+            } else {
+                console.error('Failed to logout:', response.statusText);
+            }
         } catch (error) {
             console.error('Error connecting to the logout endpoint:', error);
         }
