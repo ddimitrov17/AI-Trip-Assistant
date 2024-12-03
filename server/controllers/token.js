@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-function generateToken(userId, username,res) {
+function generateToken(userId, username, res) {
     const payload = {
         id: userId,
         username: username
@@ -12,6 +12,7 @@ function generateToken(userId, username,res) {
     res.cookie("jwt", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
+        sameSite: 'None' 
     });
 };
 
