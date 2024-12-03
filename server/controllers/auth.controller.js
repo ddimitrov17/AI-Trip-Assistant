@@ -92,7 +92,11 @@ async function current(req, res) {
 
 async function logout(req, res) {
     try {
-        res.clearCookie('jwt');
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        });
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         console.log("Could not logout", error.message);
