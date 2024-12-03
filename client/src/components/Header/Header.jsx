@@ -21,7 +21,6 @@ export default function Header() {
                 credentials: 'include'
             });
             if (response.ok) {
-                setUser(null);
                 navigate('/');
             } else {
                 console.error('Failed to logout:', response.statusText);
