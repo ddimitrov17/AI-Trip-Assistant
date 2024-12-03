@@ -82,7 +82,7 @@ export default function TripGeneratorForm() {
 
     async function saveTrip(tripData) {
         try {
-            const response = await fetch('http://localhost:5000/api/trips/save-trip', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/trips/save-trip`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -60,7 +60,7 @@ export default function TripScheduleGenerator() {
 
     async function saveItinerary(itineraryData) {
         try {
-            const response = await fetch('http://localhost:5000/api/itinerary/save-itinerary', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/itinerary/save-itinerary`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

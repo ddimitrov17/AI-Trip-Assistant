@@ -14,7 +14,7 @@ export default function Trip() {
     useEffect(() => {
         const fetchTripData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/trips/get-trip/${tripId}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/trips/get-trip/${tripId}`);
                 const tripData = await response.json();
                 setTripData(tripData);
             } catch (error) {

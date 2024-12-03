@@ -25,7 +25,7 @@ function App() {
 
     async function getCurrentUser() {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/current', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/current`, {
           method: 'GET',
           credentials: 'include'
         });

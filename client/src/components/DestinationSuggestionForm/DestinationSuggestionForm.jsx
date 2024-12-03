@@ -66,7 +66,7 @@ export default function DestinationSuggestionForm() {
 
     async function saveLocationSuggestions(locationsData) {
         try {
-            const response = await fetch('http://localhost:5000/api/locations/save-location-suggestions', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/locations/save-location-suggestions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
