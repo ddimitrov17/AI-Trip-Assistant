@@ -2,7 +2,6 @@ const { db } = require("../database/database");
 
 async function createLocationSuggestions(req, res) {
     const { user_id, travel_style, budget, activities, destinations } = req.body;
-
     try {
         const query = `
             INSERT INTO trip_destinations (user_id, travel_style, budget, activities, destinations)

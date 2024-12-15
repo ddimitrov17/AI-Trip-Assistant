@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { getBigPlacePhoto } from '../../services/photo.service';
+import ErrorComponent from '../Error/ErrorComponent.jsx';
 
 export default function DestinationSuggestionForm() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const [showError, setShowError] = useState(false);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         travelStyle: '',
@@ -30,39 +32,50 @@ export default function DestinationSuggestionForm() {
 
     function handleChange(e) {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
 
     function nextStep() {
-        setStep(step + 1);
-    };
+        setStep((prevStep) => prevStep + 1);
+    }
 
     async function submitForm() {
         setLoading(true);
-        let prompt = import.meta.env.VITE_LOCATION_PROMPT;
-        prompt = prompt
-            .replace(/{formData.travelStyle}/g, formData.travelStyle)
-            .replace(/{formData.budget}/g, formData.budget)
-            .replace(/{formData.activities}/g, formData.activities);
-        const result = await chatSession.sendMessage(prompt);
-        const text = result.response.text();
-        const parsedData = JSON.parse(text);
-        for (let i = 0; i < parsedData.destinations.length; i++) {
-            parsedData.destinations[i].locationImage=await getBigPlacePhoto(parsedData.destinations[i].name);
-        }            
-        let locationsData = {
-            travel_style: formData.travelStyle,
-            budget: formData.budget,
-            activities: formData.activities,
-            destinations: JSON.stringify(parsedData.destinations)
+        try {
+            let prompt = import.meta.env.VITE_LOCATION_PROMPT;
+            prompt = prompt
+                .replace(/{formData.travelStyle}/g, formData.travelStyle)
+                .replace(/{formData.budget}/g, formData.budget)
+                .replace(/{formData.activities}/g, formData.activities);
+
+            const result = await chatSession.sendMessage(prompt);
+            const text = await result.response.text();
+            const parsedData = JSON.parse(text);
+
+            for (let destination of parsedData.destinations) {
+                destination.locationImage = await getBigPlacePhoto(destination.name);
+            }
+
+            const locationsData = {
+                travel_style: formData.travelStyle,
+                budget: formData.budget,
+                activities: formData.activities,
+                destinations: JSON.stringify(parsedData.destinations),
+            };
+
+            const createdLocationSuggestions = await saveLocationSuggestions(locationsData);
+
+            setLoading(false);
+            navigate(`/locations-details/${createdLocationSuggestions.id}`);
+        } catch (error) {
+            console.error("Error during form submission:", error);
+            setShowError(true);
+            setLoading(false);
         }
-        const createdLocationSuggestions=await saveLocationSuggestions(locationsData);
-        setLoading(false);
-        navigate(`/locations-details/${createdLocationSuggestions.id}`)
-    };
+    }
 
     async function saveLocationSuggestions(locationsData) {
         try {
@@ -73,34 +86,40 @@ export default function DestinationSuggestionForm() {
                 },
                 body: JSON.stringify({
                     user_id: user.id,
-                    ...locationsData
+                    ...locationsData,
                 }),
             });
 
             if (response.ok) {
-                const savedLocations = await response.json();
-                return savedLocations;
+                return await response.json();
             } else {
-                console.error('Failed to save location suggestions:', response.statusText);
+                setShowError(true);
             }
         } catch (error) {
             console.error('Error saving location suggestions:', error);
+            throw error;
         }
     }
 
     return (
+        <>
+        {showError && <ErrorComponent errorMessage="You can only generate location suggestions once every 15 minutes." />}
         <div className={styles.tripForm}>
-            {loading && <LoadingSpinner/>}
+            {loading && <LoadingSpinner />}
             {!loading && step === 1 && (
                 <div>
                     <label>What type of travel experience are you looking for?</label>
                     <select name="travelStyle" value={formData.travelStyle} onChange={handleChange}>
                         <option value="">Select one</option>
-                        {Object.keys(activitiesOptions).map(style => (
-                            <option key={style} value={style}>{style}</option>
+                        {Object.keys(activitiesOptions).map((style) => (
+                            <option key={style} value={style}>
+                                {style}
+                            </option>
                         ))}
                     </select>
-                    <button onClick={nextStep} disabled={!formData.travelStyle}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.travelStyle}>
+                        Next
+                    </button>
                 </div>
             )}
 
@@ -114,7 +133,9 @@ export default function DestinationSuggestionForm() {
                         <option value="High">High</option>
                         <option value="Luxury">Luxury</option>
                     </select>
-                    <button onClick={nextStep} disabled={!formData.budget}>Next</button>
+                    <button onClick={nextStep} disabled={!formData.budget}>
+                        Next
+                    </button>
                 </div>
             )}
 
@@ -124,13 +145,18 @@ export default function DestinationSuggestionForm() {
                     <select name="activities" value={formData.activities} onChange={handleChange}>
                         <option value="">Select one</option>
                         {formData.travelStyle &&
-                            activitiesOptions[formData.travelStyle].map(activity => (
-                                <option key={activity} value={activity}>{activity}</option>
+                            activitiesOptions[formData.travelStyle].map((activity) => (
+                                <option key={activity} value={activity}>
+                                    {activity}
+                                </option>
                             ))}
                     </select>
-                    <button onClick={submitForm} disabled={!formData.activities}>Submit</button>
+                    <button onClick={submitForm} disabled={!formData.activities}>
+                        Submit
+                    </button>
                 </div>
             )}
         </div>
+        </>
     );
 }

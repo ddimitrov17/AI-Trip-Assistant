@@ -6,9 +6,11 @@ import UserContext from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { getBigPlacePhoto, getSmallPlacePhoto } from '../../services/photo.service';
+import ErrorComponent from '../Error/ErrorComponent.jsx';
 
 export default function TripGeneratorForm() {
     const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
+    const [showError,setShowError]=useState(false);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -97,7 +99,7 @@ export default function TripGeneratorForm() {
                 const savedTrip = await response.json();
                 return savedTrip;
             } else {
-                console.error('Failed to save trip:', response.statusText);
+                setShowError(true);
             }
         } catch (error) {
             console.error('Error saving trip:', error);
@@ -105,6 +107,8 @@ export default function TripGeneratorForm() {
     }
 
     return (
+        <>
+        {showError && <ErrorComponent errorMessage="You can only generate trips once every 15 minutes." />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
 
@@ -180,5 +184,6 @@ export default function TripGeneratorForm() {
                 </div>
             )}
         </div>
+        </>
     );
 }

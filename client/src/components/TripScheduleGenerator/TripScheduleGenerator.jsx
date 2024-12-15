@@ -6,10 +6,12 @@ import UserContext from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { getBigPlacePhoto } from '../../services/photo.service';
+import ErrorComponent from '../Error/ErrorComponent.jsx';
 
 export default function TripScheduleGenerator() {
     const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
     const [step, setStep] = useState(1);
+    const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
@@ -75,7 +77,7 @@ export default function TripScheduleGenerator() {
                 const savedItinerary = await response.json();
                 return savedItinerary;
             } else {
-                console.error('Failed to save itinerary:', response.statusText);
+                setShowError(true);
             }
         } catch (error) {
             console.error('Error saving itinerary:', error);
@@ -90,6 +92,8 @@ export default function TripScheduleGenerator() {
     }
 
     return (
+        <>
+        {showError && <ErrorComponent errorMessage="You can only generate travel itineraries once every 15 minutes." />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
             {!loading && step === 1 && (
@@ -123,5 +127,6 @@ export default function TripScheduleGenerator() {
                 </div>
             )}
         </div>
+        </>
     );
 }
