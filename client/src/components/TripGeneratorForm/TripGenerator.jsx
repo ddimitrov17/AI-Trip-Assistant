@@ -86,6 +86,7 @@ export default function TripGeneratorForm() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/trips/save-trip`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -108,7 +109,7 @@ export default function TripGeneratorForm() {
 
     return (
         <>
-        {showError && <ErrorComponent errorMessage="You can only generate trips once every 15 minutes." />}
+        {showError && <ErrorComponent errorMessage="Request limit exceeded." />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
 

@@ -81,6 +81,7 @@ export default function DestinationSuggestionForm() {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/locations/save-location-suggestions`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -103,7 +104,7 @@ export default function DestinationSuggestionForm() {
 
     return (
         <>
-        {showError && <ErrorComponent errorMessage="You can only generate location suggestions once every 15 minutes." />}
+        {showError && <ErrorComponent errorMessage="Request limit exceeded." />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
             {!loading && step === 1 && (
