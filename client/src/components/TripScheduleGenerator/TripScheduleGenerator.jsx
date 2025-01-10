@@ -11,6 +11,7 @@ import ErrorComponent from '../Error/ErrorComponent.jsx';
 export default function TripScheduleGenerator() {
     const [isNumberOfDaysValid, setIsNumberOfDaysValid] = useState(true); 
     const [step, setStep] = useState(1);
+    const [showError,setShowError]=useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
@@ -76,6 +77,8 @@ export default function TripScheduleGenerator() {
             if (response.ok) {
                 const savedItinerary = await response.json();
                 return savedItinerary;
+            } else {
+                setShowError(true);
             }
         } catch (error) {
             console.error('Error saving itinerary:', error);
@@ -91,6 +94,7 @@ export default function TripScheduleGenerator() {
 
     return (
         <>
+        {showError && <ErrorComponent errorMessage="Request limit exceeded." />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
             {!loading && step === 1 && (
