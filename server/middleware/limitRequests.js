@@ -1,6 +1,6 @@
 const { db } = require("../database/database");
 
-const DAILY_LIMIT = 10;
+const DAILY_LIMIT = 40;
 
 async function limitRequests(req, res) {
   try {
