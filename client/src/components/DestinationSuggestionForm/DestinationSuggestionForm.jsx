@@ -6,12 +6,14 @@ import UserContext from '../../context/UserContext';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { getBigPlacePhoto } from '../../services/photo.service';
 import ErrorComponent from '../Error/ErrorComponent.jsx';
+import { apiAccess } from '../../services/api.access.jsx';
 
 export default function DestinationSuggestionForm() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         travelStyle: '',
@@ -43,36 +45,42 @@ export default function DestinationSuggestionForm() {
     }
 
     async function submitForm() {
-        setLoading(true);
         try {
+            const getAccess = await apiAccess();
+            setLoading(true);
             let prompt = import.meta.env.VITE_LOCATION_PROMPT;
             prompt = prompt
                 .replace(/{formData.travelStyle}/g, formData.travelStyle)
                 .replace(/{formData.budget}/g, formData.budget)
                 .replace(/{formData.activities}/g, formData.activities);
-
+    
             const result = await chatSession.sendMessage(prompt);
             const text = await result.response.text();
             const parsedData = JSON.parse(text);
-
+    
             for (let destination of parsedData.destinations) {
                 destination.locationImage = await getBigPlacePhoto(destination.name);
             }
-
+    
             const locationsData = {
                 travel_style: formData.travelStyle,
                 budget: formData.budget,
-                activities: formData.activities,
+                activities: formData.activities, 
                 destinations: JSON.stringify(parsedData.destinations),
             };
-
+    
             const createdLocationSuggestions = await saveLocationSuggestions(locationsData);
-
+    
             setLoading(false);
             navigate(`/locations-details/${createdLocationSuggestions.id}`);
         } catch (error) {
             console.error("Error during form submission:", error);
+            setErrorMessage(error.message);
             setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+                setErrorMessage('');
+            }, 5000);
             setLoading(false);
         }
     }
@@ -104,7 +112,7 @@ export default function DestinationSuggestionForm() {
 
     return (
         <>
-        {showError && <ErrorComponent errorMessage="Request limit exceeded." />}
+        {showError && <ErrorComponent errorMessage={errorMessage} />}
         <div className={styles.tripForm}>
             {loading && <LoadingSpinner />}
             {!loading && step === 1 && (

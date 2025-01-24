@@ -2,6 +2,7 @@ const { db } = require("../database/database");
 
 async function createItinerary(req, res) {
     const { user_id, location, days, itinerary, location_image } = req.body;
+    // console.log(req.body); //TODO: Remove
     try {
         const query = `
             INSERT INTO itineraries (user_id,location,days,itinerary,location_image)
